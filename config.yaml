@@ -1,0 +1,33 @@
+---
+- hosts: all
+  become: true
+  vars:
+    - motd: "Ansible Manage node by valeroso"
+    - user: "Exam"
+
+  tasks:
+   - name: MOTD Banner
+     ansible.builtin.debug:
+      msg: "{{motd}}"
+
+   - name: Install Python3,pip3 and Java
+     package:
+      name:
+       - "{{python}}"
+       - "{{pip3}}"
+       - "{{Java}}"
+      state: latest
+      update_cache: yes
+
+   - name: Python3 as default python
+     ansible.builtin.command: echo " alias python=/usr/local/bin/python3" >> ~/.bashrc
+
+   - name: Pip3 as default pip
+     ansible.builtin.command: echo "alias pip/usr/local/bin/python3" >> ~/.bashrc
+
+   - name: Adding the User
+     user:
+      name: "{{user}}"
+      uid: 1069
+      createhome: yes
+      home: /home/"{{user}}"
